@@ -4,17 +4,21 @@ Unit tests for app_factory module.
 Tests the create_app function and register_exception_handlers function
 for FastAPI application factory with common configurations and exception handlers.
 """
-import pytest
+import sys
+import os
+
 from fastapi import FastAPI, HTTPException
 from fastapi.testclient import TestClient
-from unittest.mock import patch, MagicMock
 
-from backend.apps.app_factory import create_app, register_exception_handlers
+# Add the backend directory to path so we can import modules
+backend_path = os.path.abspath(os.path.join(
+    os.path.dirname(__file__), '../../../backend'))
+sys.path.insert(0, backend_path)
 
-# Import AppException from the same module as app_factory uses
-# to ensure isinstance checks work correctly
-from backend.apps.app_factory import AppException
+# Import AppException from consts.exceptions where it is defined
 from backend.consts.error_code import ErrorCode
+from consts.exceptions import AppException
+from backend.apps.app_factory import create_app, register_exception_handlers
 
 
 class TestCreateApp:
